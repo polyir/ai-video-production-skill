@@ -33,7 +33,8 @@ Scripted pipeline (details in `references/pipeline.md`): `turns.py` → `tts.py`
 | Lip-sync | Hedra `hedra-character-3` only | often cheaper per second than I2V → tell the story through a character where possible |
 | Voice, music, SFX | ElevenLabs, newest flagship TTS model (`list_models`; never copy an old `model_id`) | library voices only, never designed voices |
 | Recorded-voice cleanup | fal `veed/clean-audio` → `fal-ai/lava-sr` (denoise off) → light polish | enhancement, not generation |
-| Edit / render | Remotion (+ `@remotion/three` for at most one 3D hero scene) | |
+| 3D objects | image → GLB with fal `fal-ai/trellis-2`, orbited by a code camera | replaces I2V for objects; see `remotion.md` 3D |
+| Edit / render | Remotion (+ `@remotion/three` for 3D; usually at most one hero scene) | always `--gl=angle` for 3D |
 | Master / QC | ffmpeg | `scripts/master.sh`, `scripts/qc.sh` |
 
 Model/price details and traps: `references/ai-generation.md`.
@@ -87,3 +88,4 @@ Brand palette, fonts and logo set · narrator voice + rotating side voices · AI
 | `scripts/stt_check.py` | verify TTS turns against the script with ElevenLabs STT |
 | `scripts/master.sh` | two-pass loudness master + loudness/black/freeze QC |
 | `scripts/qc.sh` | frame grid + contact sheet + technical checks before delivery |
+| `assets/remotion-3d/` | reusable Remotion 3D kit (`kit3d.tsx`) + fast multi-still renderer (`stills.mjs`) |

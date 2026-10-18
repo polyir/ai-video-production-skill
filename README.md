@@ -32,7 +32,7 @@ Start a new session afterwards. The skill loads automatically when you work on v
 |---|---|
 | `SKILL.md` | core principles, production order, default tool split, hard-won rules |
 | `references/pipeline.md` | scripted TTS → timing → Remotion pipeline, folder layout, YouTube lessons |
-| `references/remotion.md` | Remotion patterns, timing, RTL text, 3D, render QC |
+| `references/remotion.md` | Remotion patterns, timing, RTL text, 3D stack and render traps, render QC |
 | `references/audio.md` | TTS settings, Persian diacritics, recorded-voice chain, music ducking, loudness |
 | `references/ai-generation.md` | fal model prices and traps, I2V rules, Hedra, Omni video edit, matting, LUTs |
 | `references/short-form.md` | ranking signals, hook catalogue, structure, CTAs, loop shorts, framing |
@@ -41,6 +41,7 @@ Start a new session afterwards. The skill loads automatically when you work on v
 | `scripts/stt_check.py` | verify TTS turns against the script with ElevenLabs STT |
 | `scripts/master.sh` | two-pass loudness master + QC |
 | `scripts/qc.sh` | frame grid, contact sheet, frame-0 vs cover check |
+| `assets/remotion-3d/` | Remotion 3D kit (R3F + postprocessing, GLB loading, canvas-text labels) and fast still renderer |
 
 ## Requirements for the scripts
 

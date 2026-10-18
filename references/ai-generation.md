@@ -45,6 +45,13 @@ Budget example that worked: fal ≤ ~$3.45 per reel and ≤ ~$5.75 per long vide
 - Check the last seconds of every clip (subjects vanish, content breaks) and shorten `clipLen`.
 - Weaker/cheap models: avoid faces, hands and complex physical interaction; use them for simple/abstract shots.
 
+## Image → 3D model (GLB)
+
+- `fal-ai/trellis-2` (resolution 1024, texture 2048, decimation 120–200k) gives a clean textured GLB, Y-up, height ≈ 1. Worked first try on both objects tested (fuel pump, refinery). Fallback: Hunyuan 3D v3.1.
+- Input image: one isolated object, plain neutral/grey background, 3/4 view, no text or logos (a free image agent is fine).
+- `fal_pricing` shows $0.05 per "unit" with an unclear unit — confirm on the fal dashboard; set an explicit `usd` in the job and a small cap (≈ $1.5 for two models).
+- Put GLBs in Remotion `public/` (hard links, not symlinks) and load with the kit's `Glb` (see `remotion.md` render traps).
+
 ## Lip-sync (Hedra Character-3)
 
 - Only `hedra-character-3` unless the owner approves another avatar model. v3 API: 540p 2.5¢/s, 720p 5¢/s, 1080p 6.25¢/s (separate API wallet from Studio credits; `INSUFFICIENT_BALANCE` = owner must top up). `/estimate` doesn't work for audio-driven models (cost = audio length).

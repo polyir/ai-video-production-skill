@@ -42,12 +42,29 @@ Problem/obstacle/repression in dark cold navy (`#05080f`–`#13213b`), low light
 - Check cover + at least one frame over the **brightest** shot before rendering.
 - RTL layouts: dark scrims go on the right, behind the title.
 
-## 3D hero scene (max one per reel, only for spatial topics)
+## 3D
 
-Only when the topic has spatial shape: layers/hierarchy, map/geography, scale/volume, physical object. Lists, text and simple numbers stay 2D. 3D is a tool, not a design family.
-- `npm i three@0.170.0 @react-three/fiber@9.1.2 @remotion/three@<project remotion version> @types/three@0.170.0`
+Default: at most one 3D hero scene per reel, and only when the topic has spatial shape (layers/hierarchy, map/geography, scale/volume, physical object). Lists, text and simple numbers stay 2D. 3D is a tool, not a design family — a fully-3D reel is fine when the owner asks for it, but don't make it the new repeated template.
+
+**Stack that works together (Oct 2026):** Remotion 4.0.536, `@remotion/three` 4.0.536, `three@0.186.1`, `@react-three/fiber@9.8.2`, `@react-three/drei@10.7.9`, `@react-three/postprocessing@3.2.0`, `postprocessing@6.39.5` (older pins fail npm peer resolution). Keep `@remotion/*` at exactly the project's Remotion version.
+
+**Reusable kit:** `assets/remotion-3d/kit3d.tsx` — `Stage`, `Cam`, `Glb`, `Card`, `Label3D`, `useCanvasTex`, `Post` (bloom/tone mapping/vignette with the warmup fix below) — and `assets/remotion-3d/stills.mjs` (one bundle, many `renderStill` calls: 15 frames in ~12 s instead of one CLI call per frame).
+
+Rules:
 - Animate only with `useCurrentFrame()`, `interpolate`, `spring` — not R3F's `useFrame`. Camera via a component that sets `useThree().camera` every frame. `<Sequence>` inside `ThreeCanvas` needs `layout="none"`.
-- Render with `--gl=angle`. Text and logos as an HTML layer over the canvas, not 3D text. Keep the cold→warm arc in materials/lights.
+- **Always render with `--gl=angle`** — also for audio-only renders (`--codec=wav` still draws frames and hung without it).
+- Keep the cold→warm arc in materials and lights.
+
+Render traps (each cost a debug cycle):
+- **EffectComposer frames come out blank** unless the canvas has `gl={{preserveDrawingBuffer: true}}` **and** a per-frame warmup component (`delayRender` → two `advance()` calls in rAF → `continueRender`). ThreeCanvas's own single advance runs before the composer is wired up.
+- **GLB (`useGLTF`) loads after the frame advance**, so the model is missing from the capture. In the GLB component, re-advance twice under `delayRender` after load.
+- **drei `<Html>` is unreliable in renders** (missing or misplaced). Use canvas-texture billboards (`Label3D`) or plain HTML overlays at fixed screen positions. Text and logos never as 3D text.
+- Canvas-2D text on a `CanvasTexture` shapes Persian/RTL correctly (font loaded via `@remotion/fonts`); set `toneMapped={false}` on text materials.
+- ACES tone mapping crushed bright screens → use AgX.
+- `transmission` glass renders black under the composer → transparent physical material + gold `edgesGeometry` edges.
+- Timing: a full 82 s 1080×1920 3D render ≈ 130 s at concurrency 4 on Apple Silicon.
+
+Real 3D objects instead of AI video: generate an isolated-object image (plain grey background, 3/4 view, no text) → image-to-3D GLB (see `ai-generation.md`, Trellis 2) → orbit it with a code camera. No last-second I2V breakage, full camera control.
 
 ## Grading mixed sources
 
